@@ -1,0 +1,25 @@
+const express = require('express')
+const admin_router = express()
+const adminUserController = require('../../controller/admin/AdminUserList')
+const adminVendorController = require('../../controller/admin/AdminVendorControll')
+const adminLogin = require('../../controller/admin/AdminLogin')
+const authVerify = require("../../middleware/AuthVerification")
+
+
+
+
+
+// admin_router.get('/user_data', adminUserController.user_Display)
+admin_router.post('/userStatus_Update',authVerify, adminUserController.userStatus_Update)
+
+// admin_router.get('/vendor_data', adminVendorController.vendor_Display)
+admin_router.post('/vendorStatus_Update',authVerify, adminVendorController.vendorStatus_Update)
+
+
+admin_router.post('/adminLogin', adminLogin.adminLogin)
+
+
+
+
+
+module.exports = admin_router
