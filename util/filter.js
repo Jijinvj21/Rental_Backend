@@ -93,7 +93,7 @@ if( dataSelect !== "booking" ){
               const { authorization } = req.headers;
               const token = authorization.split(" ")[1];
               let  {_id}= jwt.verify(token, process.env.VENDOR_JWT_SECRET );
-              user = await CycleBookingModel.find({ vendor :_id})
+              user = await CycleBookingModel.find({ vendor :_id} )
               .populate('user')
               .populate('vendor')
               .populate('cycle')

@@ -11,6 +11,7 @@ require('./config/config')
 const app = express();
 const cors = require('cors')
 const path=require('path');
+const chat_router = require("./router/chat/chat");
 
 
 
@@ -36,6 +37,8 @@ app.use('/admin',adminRoute)
 app.use('/vendor',vendorRoute)
 app.use('/filter',filterRoute)
 app.use('/token',tokenCheck)
+app.use('/chat',chat_router)
+
 
 
 
