@@ -14,7 +14,8 @@ const newConversation = async (req, res) => {
             });
             const added = await newConversation.save();
             if (added) {
-              res.status(200).json('saved in mongo db');
+              const findRoom = await conversationModel.findOne({ adminId: req.body.adminId });
+              res.status(200).json( {message:'saved in mongo db',conversationId:findRoom._id });
             } else {
               res.status(401).json('mongodb error');
             }
@@ -26,12 +27,15 @@ const newConversation = async (req, res) => {
                 { $push: { member: req.body.userId } }
               );
               if (adduserId) {
-                res.status(200).json('userId added');
+                const findRoom = await conversationModel.findOne({ adminId: req.body.adminId });
+                res.status(200).json({message:'userId added',conversationId:findRoom._id });
               } else {
                 res.status(401).json('mongodb error');
               }
             } else {
-              res.status(200).json('member already exists');
+          const findRoom = await conversationModel.findOne({ adminId: req.body.adminId });
+console.log(findRoom._id);
+              res.status(200).json({message:'member already exists',conversationId:findRoom._id });
             }
           }
         } else {
@@ -106,6 +110,9 @@ const getUsers = async (req, res) => {
 // add message to the document of room
 
 const addMessage = async (req, res) => {
+  console.log('....');
+  console.log(req.body);
+  console.log('....');
     const newmessage = new messageModel(req.body)
     try {
         const savedMessage = await newmessage.save()
@@ -124,13 +131,23 @@ const addMessage = async (req, res) => {
 
 const getMessage = async (req, res) => {
     console.log(1111);
-    console.log(req.body);
+    console.log(req.body.admin);
     console.log(1111);
     try {
-        const message = await messageModel.find({
-            conversationId:req.body.conversationId ,
-            sender: { $in: [req.body.userId ] }
-        })
+      let message
+// if(req.body.admin){
+//    message = await messageModel.find({
+//     conversationId:req.body.conversationId ,
+//     sender: { $in: [req.body.userId ] },
+//     admin:req.body.admin
+// })
+// }else{
+   message = await messageModel.find({
+    conversationId:req.body.conversationId ,
+    sender: { $in: [req.body.userId ] }
+})
+// }
+       
 
         if (message) {
             res.status(200).json(message)

@@ -8,6 +8,9 @@ const messageSchema = new mongoose.Schema(
     sender: {
       type: String,
     },
+    admin: {
+      type: String,
+    },
     text: {
       type: String,
     },
