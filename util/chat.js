@@ -135,18 +135,11 @@ const getMessage = async (req, res) => {
     console.log(1111);
     try {
       let message
-// if(req.body.admin){
-//    message = await messageModel.find({
-//     conversationId:req.body.conversationId ,
-//     sender: { $in: [req.body.userId ] },
-//     admin:req.body.admin
-// })
-// }else{
    message = await messageModel.find({
     conversationId:req.body.conversationId ,
     sender: { $in: [req.body.userId ] }
 })
-// }
+
        
 
         if (message) {

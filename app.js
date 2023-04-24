@@ -4,14 +4,16 @@ const adminRoute = require('./router/admin/adminRouter')
 const vendorRoute = require('./router/vendor/vendorRouter')
 const filterRoute = require("./router/filter/filterController");
 const tokenCheck= require('./router/token/tokenVerifyController')
+const chat_router = require("./router/chat/chat");
+const review_router = require("./router/review/review");
 require('./config/config')
-// const fileUpload= require('express-fileupload')
+
 
 
 const app = express();
 const cors = require('cors')
 const path=require('path');
-const chat_router = require("./router/chat/chat");
+
 
 
 
@@ -38,6 +40,7 @@ app.use('/vendor',vendorRoute)
 app.use('/filter',filterRoute)
 app.use('/token',tokenCheck)
 app.use('/chat',chat_router)
+app.use('/review',review_router)
 
 
 
