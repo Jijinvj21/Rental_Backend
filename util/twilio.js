@@ -39,8 +39,10 @@ const checkVerificationToken = (otp, phoneNumber) => {
       }).then((data) => {
         if (data.valid) {
           resolve(true);
+
         } else {
           resolve(false);
+
         }
       }).catch((error) => {
         console.log(error);

@@ -39,7 +39,7 @@ if(booked){
         { $set: { bookedFromDate: req.body.data.fromDate, bookedToDate: req.body.data.toDate } }    
       )
 
-   req.body.data?.accessories.forEach (async(element) => {
+   req.body.data?.accessories?.forEach (async(element) => {
       
      await accessoriesModel.findOneAndUpdate(
         { _id:(element) },   

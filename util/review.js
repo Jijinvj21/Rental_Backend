@@ -78,24 +78,27 @@ const getUserReview = async (req, res) => {
 }
 
 const editReview = async (req, res) => {
-    console.log('....00');
-    console.log(req.data);
-    console.log('....00');
-    try {
-     const editReview = await reviewModel.updateOne({
-        _id:req.body._id
+   console.log(req.body);
+   try {
+    const rev =  await reviewModel.find({_id:'64469fa374a494b5176c7c9d'})
+
+       console.log(rev);
+    const editReview = await reviewModel.updateMany({
+      _id:req.body.rating.id
     },{$set:{
-            stars:req.body.stars,
-            message:req.body.message 
+        stars:req.body.rating.starRating,
+        message:req.body.rating.review 
     }})
-     if(editReview){
-        res.json(editReview)
-     }else{
-        res.status(401).json('mongodb error')
-     }
-    } catch (error) {
-        console.log(error);
+    console.log(editReview);
+    if(editReview){
+      res.json(editReview)
+    }else{
+      res.status(401).json('mongodb error')
     }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json('server error');
+  }
 }
 
 const blockReview = async (req, res) => {
@@ -118,6 +121,9 @@ const blockReview = async (req, res) => {
 const getReviewOfUser = async (req, res) => {
     let token =  req.body.token
     const {_id} =  jwt.verify(token, process.env.USER_JWT_SECRET);
+    console.log(143);
+    console.log(_id);
+    console.log(143);
    try {
     const getReviewOfUser = await reviewModel.find({
        user:_id

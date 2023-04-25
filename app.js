@@ -8,17 +8,9 @@ const chat_router = require("./router/chat/chat");
 const review_router = require("./router/review/review");
 require('./config/config')
 
-
-
 const app = express();
 const cors = require('cors')
 const path=require('path');
-
-
-
-
-
-
 
 app.use(cors(
     {
@@ -31,9 +23,6 @@ const staticPath = path.join(__dirname, 'public')
 app.use(express.static(staticPath))
 app.use(express.json())
 
-
-
-
 app.use('/',userRoute)
 app.use('/admin',adminRoute)
 app.use('/vendor',vendorRoute)
@@ -41,9 +30,6 @@ app.use('/filter',filterRoute)
 app.use('/token',tokenCheck)
 app.use('/chat',chat_router)
 app.use('/review',review_router)
-
-
-
 
 
 app.listen(9000, function () {
