@@ -2,7 +2,10 @@ const jwt = require("jsonwebtoken");
 
 const filter = async (req, res, next) => {
 // 
-
+if(req.query.tokenOf == 'cycle'){
+    console.log('amal');
+}
+console.log(req.query.tokenOf);
 
     const { authorization } = req.headers;
     if (!authorization) {

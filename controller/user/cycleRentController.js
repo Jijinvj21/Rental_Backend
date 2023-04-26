@@ -25,8 +25,8 @@ const cycleBookingModal = require("../../model/user/CycleBookingModal");
      cycle:req.body.data.cycle._id,
      accessories:req.body.data.accessories,
      amount: req.body.data.totalPrice,
-     bookedFromDate:req.body.data.fromDate,
-     bookedToDate:req.body.data.toDate,
+     bookedFromDate:new Date(req.body.data.fromDate),
+     bookedToDate:new Date(req.body.data.toDate),
     })
 
   const booked =await CycleBooked.save()
@@ -36,7 +36,7 @@ if(booked){
 
         await cycleModel.findOneAndUpdate(
         { _id:(req.body.data.cycle._id) },   
-        { $set: { bookedFromDate: req.body.data.fromDate, bookedToDate: req.body.data.toDate } }    
+        { $set: { bookedFromDate: new Date(req.body.data.fromDate) , bookedToDate: new Date( req.body.data.toDate) } }    
       )
 
    req.body.data?.accessories?.forEach (async(element) => {

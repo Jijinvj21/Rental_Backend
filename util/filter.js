@@ -11,9 +11,14 @@ const filter = async (req, res) => {
   let db
   try {
     const dataSelect = req.body.data
+    console.log(req.query);
     const fromDate = new Date(req.query.fromDate);
-          const toDate = new Date(req.query.toDate);
-  
+    const toDate = new Date(req.query.toDate );
+
+    // const fromDate = req.query.fromDate;
+    // const toDate = req.query.toDate ;
+
+
       switch (dataSelect) {
         case 'user':
           db = userModel
@@ -60,20 +65,26 @@ const filter = async (req, res) => {
         }
       } else {
         if(req.query.state){
-          
+          console.log(toDate);
+          console.log(fromDate);
         
 user = await db.find({
   status: req.query.state,
   name: { $regex: search, $options: "i" },
+  // $and: [
+  //     { bookedFromDate: { $not: { $elemMatch: { $lte: toDate } } } },
+  //     { bookedToDate: { $not: { $elemMatch: { $gte: fromDate } } } }
+  // ]
   $and: [
-      { bookedFromDate: { $not: { $elemMatch: { $lte: toDate } } } },
-      { bookedToDate: { $not: { $elemMatch: { $gte: fromDate } } } }
+    { bookedFromDate: { $ne: fromDate } },
+    { bookedToDate: { $ne: toDate } }
   ]
 })
 .sort(sortBy)
 .skip(page * limit)
 .limit(limit);
           
+console.log(user);
         }else{
 
         
