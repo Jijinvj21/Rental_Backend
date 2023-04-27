@@ -27,7 +27,8 @@ const bookingSchema = mongoose.Schema({
         type:String,
     },
     status: {
-        type: String,
+        type: Boolean,
+        default:true
     },
 })
 module.exports = mongoose.model("booking", bookingSchema)

@@ -18,7 +18,7 @@ const login = async (req, res) => {
             const user = await userModel.findOne({ phone: req.body.mobile })
             if (user) {
                 if (user.status) {
-                    const data = await twilio.sendVerificationToken(req.body.mobile)
+                await twilio.sendVerificationToken(req.body.mobile)
                     res.status(201).json({ data: 'user found' })
                 } else {
                     res.status(401).json({ data: 'You are blocked by Admin' })
@@ -30,7 +30,8 @@ const login = async (req, res) => {
             const vendor = await vendorModel.findOne({ phone: req.body.mobile })
             if (vendor) {
                 if (vendor.status) {
-                    const data = await twilio.sendVerificationToken(req.body.mobile)
+                    // const data = await twilio.sendVerificationToken(req.body.mobile)
+let data = true
                     if(data){
                         res.status(201).json({ data:"logged" })
                     }
@@ -81,6 +82,7 @@ const VerifyOtp = async (req, res) => {
 
             }
         } else if (arr[0] === 'Vendor' && arr[1] === 'Login') {
+            
             if (data) {
                 const vendor = await vendorModel.findOne({ phone: phoneNumber  })
                 if(vendor){

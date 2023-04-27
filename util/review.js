@@ -1,6 +1,7 @@
 const reviewModel = require("../model/review/reviewModel")
 const booked = require("../model/user/CycleBookingModal")
 const jwt = require("jsonwebtoken");
+const userModel = require("../model/user/userModel");
 
 const userBooked = async (req, res) => {
     try {
@@ -25,19 +26,28 @@ const addReview = async (req, res) => {
     try {
        let token =  req.body.token
      const {_id} =  jwt.verify(token, process.env.USER_JWT_SECRET);
+     const username = await userModel.find({_id})
+     console.log(159951);
+     console.log(username);
+     console.log(159951);
+     if(username){
         const addreview = new reviewModel ({
+            name: username[0].name,
             user:_id,
             product:req.body.product,
             stars:req.body.stars,
             message:req.body.message 
         })
         const added = await addreview.save()
+         
         if(added){
             res.json('review added')
         }else{
             res.status(401).json('review not added')
 
         }
+     }
+     
     } catch (error) {
         console.log(error);
     }
@@ -80,9 +90,7 @@ const getUserReview = async (req, res) => {
 const editReview = async (req, res) => {
    console.log(req.body);
    try {
-    const rev =  await reviewModel.find({_id:'64469fa374a494b5176c7c9d'})
-
-       console.log(rev);
+    
     const editReview = await reviewModel.updateMany({
       _id:req.body.rating.id
     },{$set:{
