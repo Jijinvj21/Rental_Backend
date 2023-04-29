@@ -18,11 +18,6 @@ const adminDashboard = async (req, res) => {
       ]);
       
       if (dd.length > 0) {
-    //     console.log(dd[0].totalAmount);
-    //     console.log('countof booked :'+fal);
-    //   console.log('count return :' +tru);
-    //   console.log('count of cycle:' + cycleData.length); 
-    //   console.log('count of user:' + userData.length); 
       let data={
         totalRevinew :dd[0].totalAmount,
         returnCount:fal,

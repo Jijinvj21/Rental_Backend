@@ -14,7 +14,7 @@ const { ObjectId } = require('mongodb');
 const filter = async (req, res) => {
   let db
   try {
-    const dataSelect = req.body.data
+    const dataSelect = req.body?.data
    
     const fromDate = new Date(req.query.fromDate);
     const toDate = new Date(req.query.toDate);

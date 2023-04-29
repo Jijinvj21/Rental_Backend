@@ -129,9 +129,6 @@ const blockReview = async (req, res) => {
 const getReviewOfUser = async (req, res) => {
     let token =  req.body.token
     const {_id} =  jwt.verify(token, process.env.USER_JWT_SECRET);
-    console.log(143);
-    console.log(_id);
-    console.log(143);
    try {
     const getReviewOfUser = await reviewModel.find({
        user:_id
