@@ -53,8 +53,7 @@ if(booked){
 }
 
 
-
  module.exports = {
     vendorAccessories,
-    booked
+    booked,
 }
