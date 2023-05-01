@@ -3,6 +3,7 @@ const vendor_router = express()
 const cyclemanagementController = require('../../controller/vendor/cycleManagementController')
 const accessoriesmanagementController = require('../../controller/vendor/accessorieManagement')
 const bookingManagement = require('../../controller/vendor/bookingManagent')
+const venderDashboard=require('../../controller/vendor/venderDashboard')
 
 
 const uploadbuffer = require("../../util/cloudenaryMulter")
@@ -19,6 +20,10 @@ vendor_router.post('/cycleReturnStatus',vendorToken,bookingManagement.cycleRetur
 
 vendor_router.post('/edit_accessories',vendorToken, uploadbuffer.single("image"), accessoriesmanagementController.editAccessories)
 vendor_router.post('/edit_cycle',vendorToken, uploadbuffer.single("image"),cyclemanagementController.editCycle)
+
+
+vendor_router.get('/vendorDashboard', vendorToken,venderDashboard.vendorDashboard)
+
 
 
 

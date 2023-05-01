@@ -7,6 +7,7 @@ const TWILIO_SERVICE_ID = process.env.serviceid
 
 
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+// console.log(client);
 const sendVerificationToken = (phoneNumber) => {
 
   return new Promise((resolve) => {
@@ -24,7 +25,7 @@ const sendVerificationToken = (phoneNumber) => {
       });
   });
 };
-
+console.log(sendVerificationToken);
 const checkVerificationToken = (otp, phoneNumber) => {
 
 

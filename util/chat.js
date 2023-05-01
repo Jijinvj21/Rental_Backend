@@ -1,15 +1,20 @@
 const conversationModel = require('../model/chat/ConversationModel')
 const messageModel = require('../model/chat/MessageModel')
 const userModal = require('../model/user/userModel')
+const jwt = require("jsonwebtoken");
 
 //set user id and admin id create room
 const newConversation = async (req, res) => {
+  console.log(req.body);
     try {
-        if (req.body.userId && req.body.adminId) {
-          const findRoom = await conversationModel.findOne({ adminId: req.body.adminId });
+        if (req.body.userId) {
+          const findRoom = await conversationModel.findOne({ member: req.body.userId });
+console.log(findRoom)
           if (!findRoom) {
+            const token = req.body.adminId.split(" ")[0];
+            let { _id } = jwt.verify(token, process.env.JWT_SECRET);
             const newConversation = new conversationModel({
-              adminId: req.body.adminId,
+              adminId: _id,
               member:  req.body.userId
             });
             const added = await newConversation.save();
@@ -20,20 +25,8 @@ const newConversation = async (req, res) => {
               res.status(401).json('mongodb error');
             }
           } else {
-            const memberExists = findRoom.member.includes(req.body.userId);
-            if (!memberExists) {
-              const adduserId = await conversationModel.updateOne(
-                { adminId: req.body.adminId },
-                { $push: { member: req.body.userId } }
-              );
-              if (adduserId) {
-                const findRoom = await conversationModel.findOne({ adminId: req.body.adminId });
-                res.status(200).json({message:'userId added',conversationId:findRoom._id });
-              } else {
-                res.status(401).json('mongodb error');
-              }
-            } else {
-          const findRoom = await conversationModel.findOne({ adminId: req.body.adminId });
+            {
+          const findRoom = await conversationModel.findOne({ member: req.body.userId });
 console.log(findRoom._id);
               res.status(200).json({message:'member already exists',conversationId:findRoom._id });
             }
@@ -49,46 +42,44 @@ console.log(findRoom._id);
 
 
 // find the room collect of user
-const getRoom = async (req, res) => {
-    try {
-        if (req.params.userId) {
-            const room = await conversationModel.find({
-                member: { $in: [req.params.userId] }
-            })
-            if (room.length) {
-                res.status(200).json(req.params.userId)
-            } else {
-                res.status(404).json('No conversations found')
-            }
-        } else {
-            res.status(400).json('userId is required')
-        }
-    } catch (error) {
-        console.error(error)
-        res.status(500).json('Something went wrong')
-    }
-}
+// const getRoom = async (req, res) => {
+//     try {
+//         if (req.params.userId) {
+//             const room = await conversationModel.find({
+//                 member: { $in: [req.params.userId] }
+//             })
+//             if (room.length) {
+//                 res.status(200).json(req.params.userId)
+//             } else {
+//                 res.status(404).json('No conversations found')
+//             }
+//         } else {
+//             res.status(400).json('userId is required')
+//         }
+//     } catch (error) {
+//         console.error(error)
+//         res.status(500).json('Something went wrong')
+//     }
+// }
 
 
 
 //users of room
 const getUsers = async (req, res) => {
-    console.log(111);
+    console.log(1112);
+    // const { authorization } = req.headers;
+    const token = req.body.admin.split(" ")[0];
+    let { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(_id);
     try {
-        if (req.body.adminId) {
+        if (_id) {
             const room = await conversationModel.find({
-                adminId: req.body.adminId
-            })
+                adminId: _id
+            }).populate('member')
+            console.log(room);
             if (room.length) {
-                let userArray = room[0].member;
-                let userDataArray = [];
                 
-                for (let value of userArray) {
-                  const userData = await userModal.find({_id: value});
-                  userDataArray.push(userData);
-                }
-                console.log(userDataArray);
-                res.status(200).json(userDataArray);
+                res.status(200).json(room);
                 
             } else {
                 res.status(404).json('No conversations found')
@@ -131,7 +122,7 @@ const addMessage = async (req, res) => {
 
 const getMessage = async (req, res) => {
     console.log(1111);
-    console.log(req.body.admin);
+    console.log(req.body.userId);
     console.log(1111);
     try {
       let message
@@ -158,7 +149,7 @@ const getMessage = async (req, res) => {
 
 module.exports = {
     newConversation,
-    getRoom,
+    // getRoom,
     getUsers,
     addMessage,
     getMessage

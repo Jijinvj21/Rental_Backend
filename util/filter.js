@@ -59,9 +59,7 @@ const filter = async (req, res) => {
       const { authorization } = req.headers;
       const token = authorization.split(" ")[1];
       if (req.query.tokenOf === "vendor") {
-        console.log('ddd');
         let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
-console.log(147);
         user = await db.find({ vendor: _id, name: { $regex: search, $options: "i" } })
           .sort(sortBy)
           .skip(page * limit)
@@ -71,9 +69,6 @@ console.log(147);
       }
     } else {
       if (req.query.state) {
-        console.log(toDate);
-        console.log(fromDate);
-console.log(258)
         user = await db.find({
           status: req.query.state,
           name: { $regex: search, $options: "i" },
@@ -93,31 +88,84 @@ console.log(258)
 
         if (dataSelect !== "booking" && dataSelect === "review") {
           // user = await db.find()
-          console.log(369)
           user = await db.find({ name: { $regex: search, $options: "i" } })
             .sort(sortBy)
             .skip(page * limit)
             .limit(limit)
-          // console.log(user);
         } else {
 
 
           if (req.query.tokenOf === "vendor" && dataSelect !== "review") {
-            console.log(123321);
             const { authorization } = req.headers;
             const token = authorization.split(" ")[1];
             let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
-            console.log(753);
-            user = await CycleBookingModel.find({ vendor: _id })
-              .populate('user')
-              .populate('vendor')
-              .populate('cycle')
-              .populate('accessories')
-              .sort(sortBy)
-              .skip(page * limit)
-              .limit(limit)
+            console.log(_id );
+            // let a = await CycleBookingModel.find({ vendor: _id })
+            console.log(102);
+            // user = await CycleBookingModel.find({ vendor: _id })
+            //   .populate('user')
+            //   .populate('vendor')
+            //   .populate('cycle')
+            //   .populate('accessories')
+            //   .sort(sortBy)
+            //   .skip(page * limit)
+            //   .limit(limit)
+            // console.log(a);
+            user = await CycleBookingModel.aggregate([
+              {
+                $match: {
+                  vendor: new ObjectId( _id) // replace `id` with the actual vendor ID
+                }
+              },
+              {
+                $lookup: {
+                  from: "cycles",
+                  localField: "cycle",
+                  foreignField: "_id",
+                  as: "product"
+                }
+              },
+              {
+                $unwind: "$product"
+              },
+              {
+                $match: {
+                  "product.name": { $regex: search, $options: "i" }
+                }
+              },
+              {
+                $lookup: {
+                  from: "accessories",
+                  localField: "accessories",
+                  foreignField: "_id",
+                  as: "accessories"
+                }
+              },
+              {
+                $lookup: {
+                  from: "users",
+                  localField: "user",
+                  foreignField: "_id",
+                  as: "userDetails"
+                }
+              },
+              {
+                $unwind: "$userDetails"
+              },
+              {
+                $sort: sortBy
+              },
+              {
+                $skip: page * limit
+              },
+              {
+                $limit: limit
+              }
+            ]);
+            
+            // console.log(user[0].product[0].name);
+            console.log(user);
           } else if (req.query.tokenOf === "user_order" && dataSelect !== "review") {
-            console.log(11);
             const { authorization } = req.headers;
             const token = authorization.split(" ")[1];
             let { _id } = jwt.verify(token, process.env.USER_JWT_SECRET);
@@ -132,16 +180,55 @@ console.log(258)
 
           } else {
             if (dataSelect !== "review" && dataSelect === 'booking') {
+console.log(168);
+console.log(limit);
+user = await CycleBookingModel.aggregate([
+  {
+    $lookup: {
+      from: "cycles",
+      localField: "cycle",
+      foreignField: "_id",
+      as: "product"
+    }
+  },
+  {
+    $unwind: "$product"
+  },
+  {
+    $match: {
+      "product.name": { $regex: search, $options: "i" }
+    }
+  },
+  {
+    $lookup: {
+      from: "accessories",
+      localField: "accessories",
+      foreignField: "_id",
+      as: "accessories"
+    }
+  },
+  {
+    $lookup: {
+      from: "users",
+      localField: "user",
+      foreignField: "_id",
+      as: "userDetails"
+    }
+  },
+  {
+    $unwind: "$userDetails"
+  },
+  {
+    $sort: sortBy
+  },
+  {
+    $skip: page * limit
+  },
+  {
+    $limit: limit
+  }
+]);
 
-              console.log(45);
-              user = await CycleBookingModel.find()
-                .populate('user')
-                .populate('vendor')
-                .populate('cycle')
-                .populate('accessories')
-                .sort(sortBy)
-                .skip(page * limit)
-                .limit(limit)
             }
           }
 
@@ -150,11 +237,9 @@ console.log(258)
       }
     }
     if (dataSelect === "review" && req.query.tokenOf === 'vendor') {
-      console.log(123);
       const { authorization } = req.headers;
       const token = authorization.split(" ")[1];
       let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
-      console.log(_id);
 
       user = await reviewModel.aggregate([
         {
@@ -191,15 +276,12 @@ console.log(258)
       const { authorization } = req.headers;
       const token = authorization.split(" ")[1];
       let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
-      console.log(7552);
       user = await db.find({ vendor: new ObjectId(_id), name: { $regex: search, $options: "i" } })
         .sort(sortBy)
         .skip(page * limit)
         .limit(limit)
     }
     if (dataSelect === "user" && req.query.tokenOf === 'admin') {
-console.log(112233);
-      console.log(951);
       user = await db.find({ name: { $regex: search, $options: "i" } })
         .sort(sortBy)
         .skip(page * limit)
@@ -207,15 +289,12 @@ console.log(112233);
     }
 
     if (dataSelect === "vendor" && req.query.tokenOf === 'admin') {
-      console.log(112233);
-            console.log(951);
             user = await db.find({ name: { $regex: search, $options: "i" } })
               .sort(sortBy)
               .skip(page * limit)
               .limit(limit)
           }
 
-console.log(user);
 
     let total
     if (dataSelect === "accessories") {
