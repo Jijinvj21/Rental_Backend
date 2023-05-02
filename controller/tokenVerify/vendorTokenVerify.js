@@ -7,14 +7,13 @@ const VendorCheckAuth = async (req, res) => {
   }
   const token = authorization.split(" ")[1];
 
-
   try {
     const { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
-    return res.status(201).json({ message: "Authorization Sucess"});
+    return res.status(201).json({ message: "Authorization Sucess" });
   } catch (error) {
     return res.status(401).json({ message: "Invalid Authorization" });
   }
 };
 module.exports = {
-    VendorCheckAuth
-}
+  VendorCheckAuth,
+};

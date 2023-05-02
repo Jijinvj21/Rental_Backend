@@ -21,12 +21,4 @@ user_router.post('/profileUpdate',userVerify,uploadbuffer.single("image"), userP
 user_router.post('/booked',userVerify, cycleRentController.booked)
 
 
-
-
-
-
-
-
-
-
 module.exports = user_router

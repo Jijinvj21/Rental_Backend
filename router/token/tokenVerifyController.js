@@ -4,8 +4,6 @@ const adminTokenVerifyController = require('../../controller/tokenVerify/adminTo
 const vendorTokenVerifyController = require('../../controller/tokenVerify/vendorTokenVerify')
 const userTokenVerifyController = require('../../controller/tokenVerify/userTokenVerify')
 
-
-
 token_router.get('/tokenVerify', adminTokenVerifyController.adminCheckAuth)
 token_router.get('/vendortokenVerify', vendorTokenVerifyController.VendorCheckAuth)
 token_router.get('/usertokenVerify', userTokenVerifyController.userCheckAuth)

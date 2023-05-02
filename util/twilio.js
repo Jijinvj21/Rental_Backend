@@ -1,25 +1,22 @@
-require("dotenv").config()
-const twilio = require('twilio');
-const TWILIO_ACCOUNT_SID= process.env.accountSid
-const TWILIO_AUTH_TOKEN=process.env.authToken
-const TWILIO_SERVICE_ID = process.env.serviceid
-
-
+require("dotenv").config();
+const twilio = require("twilio");
+const TWILIO_ACCOUNT_SID = process.env.accountSid;
+const TWILIO_AUTH_TOKEN = process.env.authToken;
+const TWILIO_SERVICE_ID = process.env.serviceid;
 
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-// console.log(client);
 const sendVerificationToken = (phoneNumber) => {
-
   return new Promise((resolve) => {
-    client.verify
-      .v2.services(TWILIO_SERVICE_ID)
-      .verifications
-      .create({
+    client.verify.v2
+      .services(TWILIO_SERVICE_ID)
+      .verifications.create({
         to: `+91${phoneNumber}`,
-        channel: 'sms'
-      }).then((data) => {
+        channel: "sms",
+      })
+      .then((data) => {
         resolve(true);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         resolve(false);
       });
@@ -27,25 +24,21 @@ const sendVerificationToken = (phoneNumber) => {
 };
 console.log(sendVerificationToken);
 const checkVerificationToken = (otp, phoneNumber) => {
-
-
-
   return new Promise((resolve) => {
     client.verify.v2
       .services(TWILIO_SERVICE_ID)
-      .verificationChecks
-      .create({
+      .verificationChecks.create({
         to: `+91${phoneNumber}`,
-        code: otp
-      }).then((data) => {
+        code: otp,
+      })
+      .then((data) => {
         if (data.valid) {
           resolve(true);
-
         } else {
           resolve(false);
-
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         resolve(false);
       });
@@ -54,8 +47,5 @@ const checkVerificationToken = (otp, phoneNumber) => {
 
 module.exports = {
   sendVerificationToken,
-  checkVerificationToken
+  checkVerificationToken,
 };
-
-
-  
