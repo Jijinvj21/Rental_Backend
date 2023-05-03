@@ -23,13 +23,13 @@ const staticPath = path.join(__dirname, "public");
 app.use(express.static(staticPath));
 app.use(express.json());
 
-app.use("/", userRoute);
-app.use("/admin", adminRoute);
-app.use("/vendor", vendorRoute);
-app.use("/filter", filterRoute);
-app.use("/token", tokenCheck);
-app.use("/chat", chat_router);
-app.use("/review", review_router);
+app.use("/api/", userRoute);
+app.use("/api/admin", adminRoute);
+app.use("/api/vendor", vendorRoute);
+app.use("/api/filter", filterRoute);
+app.use("/api/token", tokenCheck);
+app.use("/api/chat", chat_router);
+app.use("/api/review", review_router);
 
 const server = app.listen(9000, function () {
   console.log("Server is running on port 9000 ");
