@@ -125,6 +125,16 @@ const blockReview = async (req, res) => {
   }
 };
 
+const deleteReview = async (req, res) => {
+  try {
+    const review = await reviewModel.findByIdAndDelete(req.body.id);
+    console.log(review);
+    res.json("false");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getReviewOfUser = async (req, res) => {
   let token = req.body.token;
   const { _id } = jwt.verify(token, process.env.USER_JWT_SECRET);
@@ -152,4 +162,5 @@ module.exports = {
   editReview,
   blockReview,
   getReviewOfUser,
+  deleteReview,
 };

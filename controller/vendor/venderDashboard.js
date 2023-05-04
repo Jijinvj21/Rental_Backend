@@ -9,8 +9,8 @@ const vendorDashboard = async (req, res) => {
   let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
   const bookingData = await booking.countDocuments({ vendor: _id });
   const cycleData = await cycle.find({ vendor: _id });
-  let tru = await booking.countDocuments({ vendor: _id }, { status: true });
-  let fal = await booking.countDocuments({ vendor: _id }, { status: false });
+  let tru = await booking.countDocuments({ vendor: _id ,status:true});
+  let fal = await booking.countDocuments({ vendor: _id ,status:false});
 
   const dd = await booking.aggregate([
     {
@@ -24,6 +24,8 @@ const vendorDashboard = async (req, res) => {
     },
   ]);
   if (dd.length > 0) {
+    console.log(fal);
+    console.log(tru)
     let data = {
       totalRevinew: dd[0].totalAmount,
       returnCount: fal,
