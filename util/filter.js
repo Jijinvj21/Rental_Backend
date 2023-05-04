@@ -306,7 +306,7 @@ const filter = async (req, res) => {
             name: { $regex: search, $options: "i" },
           });
         } else {
-          if (req.query.tokenOf === "vendor") {
+          if (req.query.tokenOf === "vendor" && dataSelect === "booking") {
             const { authorization } = req.headers;
             const token = authorization.split(" ")[1];
             let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
@@ -321,6 +321,18 @@ const filter = async (req, res) => {
           }
         }
       }
+    }
+    if (req.query.tokenOf === "vendor" && dataSelect === "review") {
+      const { authorization } = req.headers;
+      const token = authorization.split(" ")[1];
+      let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
+      total = await reviewModel.countDocuments({ vendor: _id });
+    }
+    if (req.query.tokenOf === "vendor" && dataSelect === "cycle") {
+      const { authorization } = req.headers;
+      const token = authorization.split(" ")[1];
+      let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
+      total = await cycleModel.countDocuments({ vendor: _id });
     }
     const response = {
       error: false,

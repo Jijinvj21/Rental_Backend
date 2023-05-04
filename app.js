@@ -13,14 +13,11 @@ const cors = require("cors");
 const path = require("path");
 
 app.use(
-  cors(
-    {
-    origin: [`http://localhost:3000`,'https://rental.jijinvj.tech'],
+  cors({
+    origin: [`http://localhost:3000`, "https://rental.jijinvj.tech"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-  }
-
-  )
+  })
 );
 const staticPath = path.join(__dirname, "public");
 app.use(express.static(staticPath));
@@ -88,12 +85,3 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 });
-
-
-
-
-
-
-
-
-

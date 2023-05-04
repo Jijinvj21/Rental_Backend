@@ -127,8 +127,7 @@ const blockReview = async (req, res) => {
 
 const deleteReview = async (req, res) => {
   try {
-    const review = await reviewModel.findByIdAndDelete(req.body.id);
-    console.log(review);
+     await reviewModel.findByIdAndDelete(req.body.id);
     res.json("false");
   } catch (error) {
     console.log(error);

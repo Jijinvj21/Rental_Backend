@@ -22,7 +22,6 @@ const sendVerificationToken = (phoneNumber) => {
       });
   });
 };
-console.log(sendVerificationToken);
 const checkVerificationToken = (otp, phoneNumber) => {
   return new Promise((resolve) => {
     client.verify.v2
