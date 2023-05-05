@@ -14,13 +14,11 @@ const path = require("path");
 
 app.use(
   cors
-  // ({
-  //   // origin: [`http://localhost:3000`, "https://rental.jijinvj.tech"],
-  //   origin: ["https://rental.jijinvj.tech"],
-  //   // origin:'*',
-  //   methods: ["GET", "POST", "PUT", "DELETE"],
-  //   credentials: true,
-  // })
+  ({
+    origin: [`http://localhost:3000`, "https://rental.jijinvj.tech"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
 );
 const staticPath = path.join(__dirname, "public");
 app.use(express.static(staticPath));
