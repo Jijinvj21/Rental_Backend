@@ -19,12 +19,10 @@ const newConversation = async (req, res) => {
           const findRoom = await conversationModel.findOne({
             adminId: req.body.adminId,
           });
-          res
-            .status(200)
-            .json({
-              message: "saved in mongo db",
-              conversationId: findRoom._id,
-            });
+          res.status(200).json({
+            message: "saved in mongo db",
+            conversationId: findRoom._id,
+          });
         } else {
           res.status(401).json("mongodb error");
         }
@@ -33,12 +31,10 @@ const newConversation = async (req, res) => {
           const findRoom = await conversationModel.findOne({
             member: req.body.userId,
           });
-          res
-            .status(200)
-            .json({
-              message: "member already exists",
-              conversationId: findRoom._id,
-            });
+          res.status(200).json({
+            message: "member already exists",
+            conversationId: findRoom._id,
+          });
         }
       }
     } else {
@@ -49,26 +45,7 @@ const newConversation = async (req, res) => {
   }
 };
 
-// find the room collect of user
-// const getRoom = async (req, res) => {
-//     try {
-//         if (req.params.userId) {
-//             const room = await conversationModel.find({
-//                 member: { $in: [req.params.userId] }
-//             })
-//             if (room.length) {
-//                 res.status(200).json(req.params.userId)
-//             } else {
-//                 res.status(404).json('No conversations found')
-//             }
-//         } else {
-//             res.status(400).json('userId is required')
-//         }
-//     } catch (error) {
-//         console.error(error)
-//         res.status(500).json('Something went wrong')
-//     }
-// }
+
 
 //users of room
 const getUsers = async (req, res) => {
