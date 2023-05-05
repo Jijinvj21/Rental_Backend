@@ -334,6 +334,9 @@ const filter = async (req, res) => {
       let { _id } = jwt.verify(token, process.env.VENDOR_JWT_SECRET);
       total = await cycleModel.countDocuments({ vendor: _id });
     }
+    if (req.query.tokenOf === "cycle" && dataSelect === "cycle") {
+      total = await cycleModel.countDocuments();
+    }
     const response = {
       error: false,
       total,
