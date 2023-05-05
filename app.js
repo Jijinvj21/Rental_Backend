@@ -15,7 +15,8 @@ const path = require("path");
 app.use(
   cors({
     // origin: [`http://localhost:3000`, "https://rental.jijinvj.tech"],
-    origin:'*',
+    origin: ["https://rental.jijinvj.tech"],
+    // origin:'*',
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
