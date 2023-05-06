@@ -5,8 +5,9 @@ const cycleModel = require("../../model/vendor/cycleModel");
 const cycleBookingModal = require("../../model/user/CycleBookingModal");
 
 const vendorAccessories = async (req, res) => {
+  console.log(req.body.vendor);
   const accessories = await accessoriesModel.find({
-    vendor: req.body.data.vendor,
+    vendor: req.body.vendor,
   });
   res.json({ accessories });
 };
