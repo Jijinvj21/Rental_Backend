@@ -39,8 +39,9 @@ const server = app.listen(9000, function () {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://rental.jijinvj.tech",
+    // origin: "https://rental.jijinvj.tech",
     // origin: "http://localhost:3000",
+    origin: "*",
   },
 });
 
